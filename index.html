@@ -1,0 +1,395 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HACKER MAN - Architect of Code</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&amp;family=Source+Code+Pro:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,900&amp;display=swap" rel="stylesheet">
+    <style>
+        /* --- Global Styles & Variables --- */
+        :root {
+            --bg-dark: #050510;
+            --text-main: #d0d0ff;
+            --text-secondary: #a0a0cc;
+            --neon-red: #ff0066;
+            --neon-blue: #00c0ff;
+            --font-heading: 'Orbitron', sans-serif;
+            --font-body: 'Source Code Pro', monospace;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            overflow-x: hidden;
+            text-align: center;
+            line-height: 1.7;
+             animation: bg-shift 20s linear infinite alternate;
+        }
+        @keyframes bg-shift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        /* --- Loading Screen Styles --- */
+        .loading-screen {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: var(--bg-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease-out;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .animated-element-img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 20px;
+             animation: spin 4s linear infinite;
+        }
+          @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .progress-bar-container {
+            width: 300px;
+            height: 25px;
+            background-color: #222;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            animation: pulse 1.5s ease-in-out infinite alternate;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, var(--neon-red), var(--neon-blue));
+            width: 0%;
+            transition: width 0.5s ease-out;
+        }
+
+        .progress-text {
+            margin-top: 10px;
+            font-size: 1em;
+            color: var(--text-main);
+        }
+
+        /* --- Main Content Styles --- */
+        .main-content {
+            opacity: 0;
+            transition: opacity 0.8s ease-out 0.8s;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .main-content.visible {
+            opacity: 1;
+        }
+
+        /* --- Header --- */
+        .header {
+            width: 100%;
+            padding: 20px 0;
+            margin-bottom: 40px;
+            text-align: center;
+            animation: slideInDown 1s ease-out;
+        }
+        @keyframes slideInDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+         .header-image {
+            width: 150px;
+            height: auto;
+            margin-bottom: 10px; /* Space between image and title */
+             animation: fadeIn 1s ease-out;
+        }
+        @keyframes fadeIn {
+             from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .header h1 {
+            font-family: var(--font-heading);
+            font-size: 3em;
+            margin: 0;
+            color: var(--text-main);
+              animation: fadeIn 1s ease-out;
+        }
+
+        /* --- Main Container --- */
+        .container {
+            background-color: #1a1a1a;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 800px;
+            width: 95%;
+            text-align: left;
+            animation: scaleUp 0.8s ease-out;
+        }
+         @keyframes scaleUp {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* --- Section Titles --- */
+        h2 {
+            font-family: var(--font-heading);
+            font-size: 2em;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            color: var(--neon-blue);
+            position: relative;
+        }
+        h2:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(to right, var(--neon-red), var(--neon-blue));
+        }
+
+        /* --- Info Table --- */
+        .info-table {
+            width: 100%;
+            margin-bottom: 30px;
+            border-collapse: collapse;
+        }
+
+        .info-table th,
+        .info-table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #444;
+        }
+
+        .info-table th {
+            font-weight: bold;
+            color: var(--text-secondary);
+        }
+
+        /* --- List Section --- */
+        .styled-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .styled-list li {
+            margin-bottom: 10px;
+             transition: color 0.3s ease, transform 0.3s ease;
+        }
+           .styled-list li:hover {
+            color: var(--neon-red);
+            transform: translateX(5px);
+        }
+
+        .styled-list li:before {
+            content: '>';
+            color: var(--neon-blue);
+            margin-right: 5px;
+        }
+
+        /* --- Footer --- */
+        .footer-section {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            width: 100%;
+            text-align: center;
+            animation: fadeInUp 1s ease-out;
+        }
+        @keyframes fadeInUp {
+              from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .footer-text {
+            font-family: var(--font-heading);
+            font-size: 1.5em;
+            color: var(--text-main);
+        }
+
+        .footer-subtext {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5em;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 1.8em;
+                margin-top: 30px;
+            }
+
+            .progress-bar-container {
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <img src="https://i.ibb.co/9M9XZCY/SILENT-MAN-LOGO.png" alt="Logo" class="animated-element-img">
+        <div class="progress-bar-container">
+            <div id="progressBar" class="progress-bar"></div>
+        </div>
+        <div id="progressText" class="progress-text">0%</div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="mainContent" class="main-content">
+        <header class="header">
+             <img src="https://i.ibb.co/9M9XZCY/SILENT-MAN-LOGO.png" alt="Logo" class="header-image">
+            <h1>SILENT MAN</h1>
+        </header>
+
+        <div class="container">
+            <h2>M Y I N F O</h2>
+            <table class="info-table">
+                <tbody><tr>
+                    <th>N A M E</th>
+                    <td>SURYANSH EXPLOITS</td>
+                </tr>
+                <tr>
+                    <th>U S E R N A M E</th>
+                    <td>@TOXIC IS HERE</td>
+                </tr>
+                <tr>
+                    <th>F R E I N D S</th>
+                    <td>E R R O R 4 0 4</td>
+                </tr>
+                <tr>
+                    <th>F R O M</th>
+                    <td>I N D I A</td>
+                </tr>
+                <tr>
+                    <th>S T U D Y I N G</th>
+                    <td>E R R O R</td>
+                </tr>
+                <tr>
+                    <th>A G E</th>
+                    <td>H I D D E N</td>
+                </tr>
+            </tbody></table>
+
+            <h2>S K I L L S</h2>
+            <ul class="styled-list">
+                <li>OSINT</li>
+                <li>SYSTEM ENGINEERING</li>
+                <li>BOT DEVELOPMENT</li>
+                <li>API SCRAPING</li>
+                <li>CYBER SECURITY</li>
+                <li>NETWORKING</li>
+                <li>REVERSE ENGINEERING</li>
+                <li>CODE OPTIMIZATION</li>
+                <li>DATABASE MANAGEMENT</li>
+                <li>CLOUD ARCHITECTURE</li>
+            </ul>
+
+            <h2>T E C H S T A C K</h2>
+            <ul class="styled-list">
+                <li>HTML</li>
+                <li>CSS</li>
+                <li>JAVASCRIPT</li>
+                <li>PYTHON</li>
+                <li>GO</li>
+                <li>PHP</li>
+                <li>JAVA</li>
+                <li>SQL / NoSQL</li>
+                <li>DOCKER / KUBERNETES</li>
+                <li>LINUX / BASH</li>
+            </ul>
+
+            <h2>C H A N N E L S</h2>
+            <ul class="styled-list">
+                <li><a href="https://t.me/ABOUTTOXICSURUZXXR" target="_blank">CORE</a></li>
+                <li><a href="https://t.me/ABOUTTOXICSURUZXXR" target="_blank">COMMUNITY</a></li>
+            </ul>
+        </div>
+
+        <section class="footer-section">
+            <p class="footer-text">ELEVATING DIGITAL REALITIES</p>
+            <p class="footer-subtext">ARCHITECT OF THE UNSEEN</p>
+        </section>
+    </div>
+
+    <script>
+        const loadingScreen = document.getElementById('loadingScreen');
+        const mainContent = document.getElementById('mainContent');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+
+        let progress = 0;
+        const totalDuration = 3000;
+        const updateInterval = 50;
+        const totalSteps = totalDuration / updateInterval;
+        let currentStep = 0;
+
+        const loaderInterval = setInterval(() => {
+            currentStep++;
+            progress = Math.min((currentStep / totalSteps) * 100, 100);
+
+            progressBar.style.width = progress + '%';
+            progressText.textContent = Math.round(progress) + '%';
+
+            if (progress >= 100) {
+                clearInterval(loaderInterval);
+                loadingScreen.classList.add('hidden');
+                mainContent.classList.add('visible');
+            }
+        }, updateInterval);
+
+        setTimeout(() => {
+            if (!loadingScreen.classList.contains('hidden')) {
+                loadingScreen.classList.add('hidden');
+                mainContent.classList.add('visible');
+            }
+        }, totalDuration + 500);
+    </script>
+
+
+</body></html>
